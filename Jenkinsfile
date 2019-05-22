@@ -14,20 +14,41 @@ podTemplate(label: label, containers: [
     def myRepo = checkout scm
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
+   
+    stage('Clone') {
+        echo "1.Clone Stage"
+        git url: "https://github.com/zhangguangguang/polling-app-server.git"
+        script {
+            build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        }
+    }
 
     stage('单元测试') {
       echo "测试阶段"
     }
+
     stage('代码编译打包') {
       container('maven') {
         echo "打码编译打包阶段"
       }
     }
+
     stage('构建 Docker 镜像') {
       container('docker') {
         echo "构建 Docker 镜像阶段"
+        sh "docker build -t polling-app-server:${build_tag} ."
       }
     }
+   
+    stage('Push') {
+        echo "4.Push Docker Image Stage"
+        withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USER')]) {
+            sh "docker login ${dockerRegistryUrl} -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}"
+            sh "docker tag polling-app-server:${build_tag} harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
+            sh "docker push harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
+        }
+    }
+
     stage('运行 Kubectl') {
       container('kubectl') {
         echo "查看 K8S 集群 Pod 列表"
