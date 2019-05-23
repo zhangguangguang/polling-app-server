@@ -17,7 +17,6 @@ podTemplate(label: label, containers: [
    
     stage('Prepare') {
         echo "1.Prepare Stage"
-        checkout scm
         script {
             build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
             if (env.BRANCH_NAME != 'master') {
@@ -33,6 +32,7 @@ podTemplate(label: label, containers: [
     stage('代码编译打包') {
       container('maven') {
         echo "3.打码编译打包阶段"
+        sh "mvn clean install-Dmaven.test.skip=true -Ptest"
       }
     }
 
