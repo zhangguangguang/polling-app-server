@@ -32,7 +32,7 @@ podTemplate(label: label, containers: [
     stage('代码编译打包') {
       container('maven') {
         echo "3.打码编译打包阶段"
-        sh "mvn test"
+        sh "mvn clean install"
       }
     }
 
