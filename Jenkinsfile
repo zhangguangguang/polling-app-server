@@ -2,7 +2,7 @@ def label = "slave-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, 
   containers: [
-      containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk9', command: 'cat', ttyEnabled: true),
+      containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
       containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
       containerTemplate(name: 'kubectl', image: 'cnych/kubectl', command: 'cat', ttyEnabled: true),
       containerTemplate(name: 'helm', image: 'cnych/helm', command: 'cat', ttyEnabled: true)
@@ -32,9 +32,9 @@ podTemplate(label: label,
     }
 
     stage('代码编译打包') {
-      container('gradle') {
+      container('maven') {
         echo "3.打码编译打包阶段"
-        sh "gradle build"
+        sh "mvn -B -DskipTests clean package"
       }
     }
 
