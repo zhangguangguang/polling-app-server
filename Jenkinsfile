@@ -48,7 +48,8 @@ podTemplate(label: label,
     stage('Push') {
         echo "5.Push Docker Image Stage"
         docker.withRegistry('harbor01.saicm.local','harbor') {
-            harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}.push("V1.0-${env.BUILD_ID}")
+            def imageName = "harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
+            imageName.push("V1.0-${env.BUILD_ID}")
             sh "docker rmi harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
         }
     }
