@@ -34,7 +34,7 @@ podTemplate(label: label,
     stage('代码编译打包') {
       container('gradle') {
         echo "3.打码编译打包阶段"
-        sh "mvn clean install"
+        sh "gradle build"
       }
     }
 
