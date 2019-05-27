@@ -42,16 +42,15 @@ podTemplate(label: label,
     stage('构建 Docker 镜像') {
       container('docker') {
         echo "4.构建 Docker 镜像阶段"
-        sh "docker build -t polling-app-server:${build_tag} ."
+        sh "docker build -t harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag} ."
       }
     }
    
     stage('Push') {
         echo "5.Push Docker Image Stage"
-        withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USER')]) {
-            sh "docker login ${dockerRegistryUrl} -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}"
-            sh "docker tag polling-app-server:${build_tag} harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
-            sh "docker push harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
+        docker.withRegistry('harbor01.saicm.local','harbor') {
+            harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}.push()
+            sh "docker rmi harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
         }
     }
 
