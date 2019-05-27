@@ -1,5 +1,4 @@
 def label = "slave-${UUID.randomUUID().toString()}"
-def dockerRegistryUrl = "harbor01.saicm.local"
 
 podTemplate(label: label, 
   containers: [
