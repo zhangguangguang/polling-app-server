@@ -67,6 +67,7 @@ spec:
       labels:
         app: mysql
     spec:
+      serviceAccount: kubernetes-plugin
       restartPolicy: Always
       containers:
       - name: mysql
