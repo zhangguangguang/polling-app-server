@@ -16,7 +16,7 @@ spec:
       labels:
         app: polling-server
     spec:
-      serviceAccount: kubernetes-plugin
+      serviceAccount: jenkins
       restartPolicy: Always
       imagePullSecrets:
         - name: myreg
@@ -67,7 +67,7 @@ spec:
       labels:
         app: mysql
     spec:
-      serviceAccount: kubernetes-plugin
+      serviceAccount: jenkins
       restartPolicy: Always
       containers:
       - name: mysql
