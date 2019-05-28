@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-MAINTAINER Nick <zhangguangguang@saicmobility.com>
+MAINTAINER Nick <326430086@qq.com>
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
