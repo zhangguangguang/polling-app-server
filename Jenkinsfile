@@ -65,6 +65,8 @@ podTemplate(label: label,
         echo "6.查看 K8S 集群 Pod 列表"
         sh "kubectl get pods --all-namespaces" 
         sh """
+            echo ${image}
+            echo ${build_tag}
             sed -i "s/<IMAGE>/${image}/g" manifests/k8s.yaml
             sed -i "s/<IMAGE_TAG>/${build_tag}/g" manifests/k8s.yaml
             kubectl apply -f manifests/k8s.yaml
