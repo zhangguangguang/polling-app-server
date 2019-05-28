@@ -51,7 +51,7 @@ podTemplate(label: label,
     stage('Push') {
         echo "5.Push Docker Image Stage"
         withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USER')]) {
-            sh "echo ${dockerRegistryUrl},${DOCKER_HUB_USER},${DOCKER_HUB_PASSWORD}"
+            sh "echo ${dockerRegistryUrl}"
         }
     }
 
