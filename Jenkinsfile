@@ -50,13 +50,14 @@ podTemplate(label: label,
    
     stage('Push') {
         echo "5.Push Docker Image Stage"
-        container('docker'){
+        container('docker') {
         withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USER')]) {
             sh """
                 docker login ${dockerRegistryUrl} -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
                 docker push ${image}:${build_tag}
             """
-        }}
+            }
+        }
     }
 
     stage('运行 Kubectl') {
