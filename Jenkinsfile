@@ -69,7 +69,7 @@ podTemplate(label: label,
     stage('运行 Helm') {
       container('helm') {
         echo "7.查看 Helm Release 列表"
-        sh "helm list"
+        sh "kubectl apply -f k8s.yaml"
       }
     }
   }
