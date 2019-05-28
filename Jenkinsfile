@@ -64,12 +64,17 @@ podTemplate(label: label,
       container('kubectl') {
         echo "6.查看 K8S 集群 Pod 列表"
         sh "kubectl get pods --all-namespaces" 
+        sh """
+            sed -i "s/<IMAGE>/${image}" manifests/k8s.yaml
+            sed -i "s/<IMAGE_TAG>/${build_tag}" manifests/k8s.yaml
+            kubectl apply -f k8s.yaml
+        """
       }
     }
     stage('运行 Helm') {
       container('helm') {
         echo "7.查看 Helm Release 列表"
-        sh "kubectl apply -f k8s.yaml"
+        sh "kubectl get pods --all-namespaces"
       }
     }
   }
