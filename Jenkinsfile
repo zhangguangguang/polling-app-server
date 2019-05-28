@@ -74,7 +74,7 @@ podTemplate(label: label,
     stage('运行 Helm') {
       container('helm') {
         echo "7.查看 Helm Release 列表"
-        sh "kubectl get pods --all-namespaces"
+        sh "kubectl get pods -n course"
       }
     }
   }
