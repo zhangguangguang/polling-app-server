@@ -16,6 +16,7 @@ spec:
       labels:
         app: polling-server
     spec:
+      serviceAccount: kubernetes-plugin
       restartPolicy: Always
       imagePullSecrets:
         - name: myreg
