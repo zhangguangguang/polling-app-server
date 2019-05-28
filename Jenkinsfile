@@ -67,7 +67,6 @@ podTemplate(label: label,
         sh """
             echo ${image}
             echo ${build_tag}
-            sed -i 's/<IMAGE>/${image}' manifests/k8s.yaml
             sed -i 's/<IMAGE_TAG>/${build_tag}' manifests/k8s.yaml
             kubectl apply -f manifests/k8s.yaml
         """
