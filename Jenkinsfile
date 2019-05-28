@@ -16,6 +16,9 @@ podTemplate(label: label,
     def myRepo = checkout scm
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
+    def dockerRegistryUrl = "harbor01.saicm.local"
+    def imageEndpoint = "kubernetes-1-13-5/polling-app-server"
+    def image = "${dockerRegistryUrl}/${imageEndpoint}"
    
     stage('Prepare') {
         echo "1.Prepare Stage"
@@ -41,16 +44,14 @@ podTemplate(label: label,
     stage('构建 Docker 镜像') {
       container('docker') {
         echo "4.构建 Docker 镜像阶段"
-        sh "docker build -t harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag} ."
+        sh "docker build -t ${image}:${build_tag} ."
       }
     }
    
     stage('Push') {
         echo "5.Push Docker Image Stage"
-        docker.withRegistry('harbor01.saicm.local','harbor') {
-            def imageName = "harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
-            imageName.push("V1.0-${env.BUILD_ID}")
-            sh "docker rmi harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:${build_tag}"
+        withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USER')]) {
+            sh "echo ${dockerRegistryUrl},${DOCKER_HUB_USER},${DOCKER_HUB_PASSWORD}"
         }
     }
 
