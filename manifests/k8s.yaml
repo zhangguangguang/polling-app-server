@@ -20,7 +20,7 @@ spec:
       imagePullSecrets:
         - name: myreg
       containers:
-      - image: <IMAGE>:<IMAGE_TAG>
+      - image: harbor01.saicm.local/kubernetes-1-13-5/polling-app-server:<IMAGE_TAG>
         name: polling-server
         imagePullPolicy: IfNotPresent
         ports:
