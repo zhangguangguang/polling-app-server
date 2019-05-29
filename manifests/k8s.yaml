@@ -1,17 +1,8 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-   name: course
-   labels:
-     name: course
-
----
-
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: polling-server
-  namespace: course
+  namespace: kubernetes-plugin
   labels:
     app: polling-server
 spec:
@@ -53,7 +44,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: polling-server
-  namespace: course
+  namespace: kubernetes-plugin
 spec:
   selector:
     app: polling-server
@@ -68,7 +59,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: mysql
-  namespace: course
+  namespace: kubernetes-plugin
 spec:
   template:
     metadata:
@@ -105,7 +96,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: mysql
-  namespace: course
+  namespace: kubernetes-plugin
 spec:
   selector:
     app: mysql
